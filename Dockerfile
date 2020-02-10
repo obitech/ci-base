@@ -1,6 +1,6 @@
 FROM ubuntu:bionic
 
-ENV TERRAFORM_VERSION=0.12.8
+ENV TERRAFORM_VERSION=0.12.20
 ENV GO_VERSION=1.13.7
 
 # Install general packages
@@ -10,15 +10,15 @@ RUN apt-get update && apt-get install -y \
 # Install Python
 RUN apt-get install -y \
     python3 python3-pip python python-pip && \
-    python --version && pip --version && \
-    python3 --version && pip3 --version
+    pip install --upgrade pip && python --version && pip --version && \
+    pip3 install --upgrade pip && python3 --version && pip3 --version
 
 # Install Go
 RUN wget -q "https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz" && \
     tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz && \
     rm go${GO_VERSION}.linux-amd64.tar.gz && \
     export PATH=$PATH:/usr/local/go/bin && \
-    go version \
+    go version && \
     go get -u golang.org/x/lint/golint
 
 ENV GOPATH /go
@@ -33,9 +33,7 @@ RUN wget -qO- "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/ter
     terraform version
 
 # Install Ansible
-RUN apt-add-repository --yes --update ppa:ansible/ansible && \
-    apt-get install -y ansible && \
-    ansible --version
+RUN pip3 install ansible && ansible --version
 
 # Install cfssl
 RUN go get -u github.com/cloudflare/cfssl/cmd/... && \
