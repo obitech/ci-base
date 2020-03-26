@@ -1,7 +1,7 @@
 FROM ubuntu:bionic
 
-ENV TERRAFORM_VERSION=0.12.20
-ENV GO_VERSION=1.13.7
+ENV TERRAFORM_VERSION=0.12.24
+ENV GO_VERSION=1.14.1
 
 # Install general packages
 RUN apt-get update && apt-get install -y \
@@ -10,8 +10,8 @@ RUN apt-get update && apt-get install -y \
 # Install Python
 RUN apt-get install -y \
     python3 python3-pip python python-pip && \
-    pip install --upgrade pip && python --version && pip --version && \
-    pip3 install --upgrade pip && python3 --version && pip3 --version
+    python -m pip install --upgrade pip && python --version && pip --version && \
+    python3 -m pip install --upgrade pip && python3 --version && pip3 --version
 
 # Install Go
 RUN wget -q "https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz" && \
